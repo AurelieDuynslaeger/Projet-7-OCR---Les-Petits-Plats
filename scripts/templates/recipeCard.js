@@ -1,7 +1,7 @@
 export function recipeCard(recipe) {
     return `
     <a href="#" class="rounded-xl basis-[28%]">
-        <div class="recipe bg-white rounded-xl flex flex-col h-[730px] shadow-lg">
+        <div class="recipe bg-white rounded-xl flex flex-col h-[700px] shadow-lg">
             <div class="relative flex-none h-[243px] overflow-hidden rounded-t-xl">
                 <img src="./assets/recipes/${recipe.image}" alt="${recipe.name}" class="object-cover w-full h-full">
                 <span class="absolute top-4 right-4 bg-yellow-300 px-2 py-1 rounded-full font-manrope text-xs">${recipe.time} min</span>
