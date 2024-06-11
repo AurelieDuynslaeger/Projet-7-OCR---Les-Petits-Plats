@@ -20,6 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (query.length >= 3) {
             mainSearch(query, recipesContainer);
         }
+        else {
+            displayRecipes(recipes, recipesContainer)
+        }
     });
 
     displayRecipes(recipes, recipesContainer)
