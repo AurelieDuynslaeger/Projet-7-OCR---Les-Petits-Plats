@@ -2,12 +2,14 @@ import recipes from "../../data/recipes.js";
 import { recipeCard } from "../templates/recipeCard.js";
 
 export function mainSearch(query, container) {
-    if (query.lenght < 3) {
-        //si la requête n'atteint pas 3 caractères on affiche tjr les recettes telles quelles
-        displayRecipes(recipes);
+    if (query.length < 3) {
+        // Si la requête n'atteint pas 3 caractères, on affiche toutes les recettes
+        displayRecipes(recipes, container);
+        updateRecipeCount(recipes.length);
         return;
     }
-    //sinon on passe au filtrage
+
+    // Filtrage des recettes
     const filteredRecipes = recipes.filter(recipe => {
         const queryLower = query.toLowerCase();
         const nameMatch = recipe.name.toLowerCase().includes(queryLower);
@@ -18,15 +20,12 @@ export function mainSearch(query, container) {
 
         return nameMatch || descriptionMatch || ingredientsMatch;
     });
-    //on display les recherches filtrées
+
+    // Affichage des recettes filtrées
     displayRecipes(filteredRecipes, container);
-    //update des select de recherche avancée
-    updateFilters(filteredRecipes)
-    //1 - créer 3 tableaux (ingrédients, ustensiles, appareils) extraits de filteredrecipes
-    //2 - injecter les données dans chaque select
-    //- cibler les éléments select du DOM
-    //- injecter les données du tableau dans chaque option
-    //- input de recherche avant la liste des options
+    updateRecipeCount(filteredRecipes.length);
+    // Mise à jour des filtres de recherche avancée
+    updateFilters(filteredRecipes);
 }
 
 export function displayRecipes(recipesFound, container) {
@@ -34,18 +33,21 @@ export function displayRecipes(recipesFound, container) {
     recipesFound.forEach(recipe => {
         const cardHTML = recipeCard(recipe);
         container.innerHTML += cardHTML;
-    })
+    });
 }
 
-//fonction pour mettreà jour les filtres select ingrédients/ustensiles/appareils
+// Fonction pour mettre à jour le nombre de recettes affichées
+function updateRecipeCount(count) {
+    const countRecipe = document.getElementById("recipe-count");
+    countRecipe.textContent = `${count} recette(s)`;
+}
+
+// Fonction pour mettre à jour les filtres select ingrédients/ustensiles/appareils
 function updateFilters(filteredRecipes) {
-    //initialisation des tableaux
     let ingredients = [];
     let appliances = [];
     let ustensils = [];
 
-    //pour chaque recettes filtrées, on extrait les ingrédients etc etc
-    //et les push dans leurs tableaux respectifs créées ci-dessus
     filteredRecipes.forEach(recipe => {
         recipe.ingredients.forEach(ingredient =>
             ingredients.push(ingredient.ingredient));
@@ -53,24 +55,20 @@ function updateFilters(filteredRecipes) {
         recipe.ustensils.forEach(ustensil => ustensils.push(ustensil));
     });
 
-    //élimination des doublons (Set = structure de données qui ne permets pas les valeurs dupliquées)
-    //convertion du set en tableau grâce à l'opérateur de décomposition
     ingredients = [...new Set(ingredients)];
     appliances = [...new Set(appliances)];
     ustensils = [...new Set(ustensils)];
 
-    //mise à jour des éléments HTML (les options sont donc dynamiques selon ce qui est récupéré de la première recherche principale)
     updateSelect("ingredients-select", ingredients);
     updateSelect("appliances-select", appliances);
     updateSelect("ustensils-select", ustensils);
 }
-//fonction pour update les options de chaque select
+
+// Fonction pour mettre à jour les options de chaque select
 function updateSelect(selectId, options) {
-    //élement DOM
     const selectElement = document.getElementById(selectId);
-    //on vient vider le contenu des options sauf celle du label et à chaque recherche pour affecter les nouvelles donneés
     selectElement.innerHTML = selectElement.querySelector('option[value=""]').outerHTML;
-    //pour chaque option, on vient créer l'élément, on lui donne en valeur ce que l'on a dans chaque tableaux (ing, ust, appli)
+
     options.forEach(option => {
         const optionElement = document.createElement("option");
         optionElement.textContent = option;

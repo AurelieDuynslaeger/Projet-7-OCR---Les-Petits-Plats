@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputSearch = document.getElementById("search");
     //récup du formulaire de recherche principal
     const searchForm = document.getElementById("search-form");
+    //affichage du nombre de recettes
+    const countRecipe = document.getElementById("recipe-count")
     // Écouter les soumissions du formulaire
     searchForm.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -28,3 +30,4 @@ document.addEventListener("DOMContentLoaded", () => {
     displayRecipes(recipes, recipesContainer)
 
 });
+
