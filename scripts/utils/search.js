@@ -34,6 +34,9 @@ export function displayRecipes(recipesFound, container) {
         const cardHTML = recipeCard(recipe);
         container.innerHTML += cardHTML;
     });
+    // Afficher le nombre de recettes
+    const countRecipe = document.getElementById("recipe-count");
+    countRecipe.textContent = `${recipesFound.length} recette(s)`;
 }
 
 // Fonction pour mettre à jour le nombre de recettes affichées
