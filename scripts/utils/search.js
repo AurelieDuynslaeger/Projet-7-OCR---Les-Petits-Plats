@@ -1,5 +1,6 @@
 import recipes from "../../data/recipes.js";
 import { recipeCard } from "../templates/recipeCard.js";
+import { searchTag } from "../templates/tag.js"
 
 export function mainSearch(query, container) {
     if (query.length < 3) {
@@ -77,4 +78,44 @@ function updateSelect(selectId, options) {
         optionElement.textContent = option;
         selectElement.appendChild(optionElement);
     });
+}
+
+// Fonction pour ajouter un tag de recherche
+export function addTag(tag) {
+    //on cible l'élement container du dom où afficher les tags
+    const tagsContainer = document.getElementById("tags");
+    //on cible l'élement enfant de ce container qui recevra le tag
+    const existingTag = Array.from(tagsContainer.children).find(
+        (element) => element.querySelector("p").textContent === tag
+    );
+
+    //si le tag n'existe pas
+    if (!existingTag) {
+        //on utilise la fonction d'affichge du tag de la recherche
+        const tagHTML = searchTag(tag);
+        tagsContainer.innerHTML += tagHTML;
+
+        // Ajout de l'événement de suppression du tag
+        const tagElements = tagsContainer.querySelectorAll(".tag");
+        const lastTagElement = tagElements[tagElements.length - 1];
+        //on cible l'icone pour supprimer le tag
+        lastTagElement.querySelector("i").addEventListener("click", () => {
+            lastTagElement.remove();
+            //mise à jour la recherche après la suppression du tag
+            updateSearch();
+        });
+    }
+}
+
+//Fonction pour mettre à jour la recherche après la suppression d'un tag
+function updateSearch() {
+    const tagsContainer = document.getElementById("tags");
+    const tags = Array.from(tagsContainer.children).map(
+        (element) => element.querySelector("p").textContent
+    );
+
+    const query = tags.join(" ");
+    const recipesContainer = document.getElementById("recipes");
+
+    mainSearch(query, recipesContainer);
 }

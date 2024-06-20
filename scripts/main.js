@@ -1,33 +1,47 @@
 import recipes from "./../data/recipes.js";
-import { displayRecipes, mainSearch } from "./utils/search.js";
+import { addTag, displayRecipes, mainSearch } from "./utils/search.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    //recup du conteneur html
+    // Récupération des éléments du DOM
     const recipesContainer = document.getElementById("recipes");
-    //récup de l'input de recherche principal
     const inputSearch = document.getElementById("search");
-    //récup du formulaire de recherche principal
     const searchForm = document.getElementById("search-form");
-    //affichage du nombre de recettes
-    const countRecipe = document.getElementById("recipe-count")
+    const searchIcon = document.getElementById("search-icon");
+
+    // Fonction pour effectuer la recherche et ajouter le tag
+    const performSearch = () => {
+        const query = inputSearch.value.trim();
+        if (query.length >= 3) {
+            mainSearch(query, recipesContainer);
+            addTag(query);
+        }
+        // Vider le champ de recherche après la soumission, même si la recherche n'a pas atteint 3 caractères
+        inputSearch.value = "";
+    };
+
     // Écouter les soumissions du formulaire
     searchForm.addEventListener("submit", (event) => {
         event.preventDefault();
-        const query = inputSearch.value;
-        mainSearch(query, recipesContainer);
+        performSearch();
     });
+
+    // Écouter le clic sur l'icône de recherche
+    if (searchIcon) {
+        searchIcon.addEventListener("click", (event) => {
+            performSearch();
+        });
+    }
+
     // Écouter les entrées de l'utilisateur pour les recherches dynamiques
     inputSearch.addEventListener("input", (event) => {
-        const query = event.target.value;
+        const query = event.target.value.trim();
         if (query.length >= 3) {
             mainSearch(query, recipesContainer);
-        }
-        else {
-            displayRecipes(recipes, recipesContainer)
+        } else {
+            displayRecipes(recipes, recipesContainer);
         }
     });
 
-    displayRecipes(recipes, recipesContainer)
-
+    // Afficher les recettes par défaut
+    displayRecipes(recipes, recipesContainer);
 });
-

@@ -38,9 +38,9 @@
         <h1 class="font-anton text-customYellow text-center uppercase text-2xl w-4/5 md:text-3xl md:w-3/5 lg:text-4xl lg:w-2/5">chercher parmi plus de 1500 recettes du quotidien, simples et délicieuses</h1>
         <form id="search-form" class="relative 4/5 md: 3/5 lg:w-2/5 mt-4">
           <input class="appearance-none border-1 border-gray-200 rounded-lg w-full py-4 px-4 pr-12 text-gray-700 font-manrope text-xs leading-tight focus:outline-none focus:bg-white" id="search" type="text" placeholder="Rechercher une recette, un ingrédient...">
-          <div class="absolute inset-y-0 right-0 flex items-center justify-center bg-[#1b1b1b] h-10 w-10 m-1 rounded-lg">
-            <i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i>
-        </div>
+          <button class="absolute inset-y-0 right-0 flex items-center justify-center bg-[#1b1b1b] h-10 w-10 m-1 rounded-lg">
+            <i class="fa-solid fa-magnifying-glass" style="color: #ffffff;" id="search-icon"></i>
+        </button>
       </form>
     </header>
     <main class="max-w-7xl m-auto">
@@ -92,11 +92,8 @@
           <p class="font-anton" id="recipe-count"></p>
         </div>
       </div>
-      <div class="container px-8 py-4 tags flex flex-start gap-12">
-        <!-- <div class="tag bg-customYellow rounded-lg font-manrope flex justify-evenly items-center p-4 gap-3">
-          <p>lait de coco</p>
-          <i class="fa-solid fa-xmark text-black"></i>
-        </div> -->
+      <div class="container px-8 py-4 flex flex-start gap-12" id="tags">
+        
       </div>
       <div class="container flex flex-wrap gap-8 justify-around p-8 items-center" id="recipes">
       </div>
