@@ -2,8 +2,10 @@ import recipes from "../../data/recipes.js";
 import { recipeCard } from "../templates/recipeCard.js";
 import { searchTag } from "../templates/tag.js"
 
+let currentFilters = [];
+
 export function mainSearch(query, container) {
-    if (query.length < 3) {
+    if (query.length < 3 && currentFilters.length === 0) {
         // Si la requête n'atteint pas 3 caractères, on affiche toutes les recettes
         displayRecipes(recipes, container);
         updateRecipeCount(recipes.length);
@@ -19,6 +21,13 @@ export function mainSearch(query, container) {
             ingredient.ingredient.toLowerCase().includes(queryLower)
         );
 
+        // Vérifier si toutes les conditions des filtres actifs sont remplies
+        const allFiltersMatch = currentFilters.every(filter =>
+            recipe.ingredients.some(ingredient =>
+                ingredient.ingredient.toLowerCase().includes(filter.toLowerCase())
+            )
+        );
+
         return nameMatch || descriptionMatch || ingredientsMatch;
     });
 
@@ -27,6 +36,11 @@ export function mainSearch(query, container) {
     updateRecipeCount(filteredRecipes.length);
     // Mise à jour des filtres de recherche avancée
     updateFilters(filteredRecipes);
+}
+
+// Fonction pour mettre à jour les filtres actifs
+export function updateActiveFilters(tags) {
+    currentFilters = tags;
 }
 
 export function displayRecipes(recipesFound, container) {
