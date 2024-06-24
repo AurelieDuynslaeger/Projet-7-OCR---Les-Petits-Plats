@@ -1,31 +1,33 @@
 import recipes from "../../data/recipes.js";
 import { recipeCard } from "../templates/recipeCard.js";
-import { searchTag } from "../templates/tag.js"
+import { searchTag } from "../templates/tag.js";
 
 let currentFilters = [];
 
+// Fonction principale pour effectuer la recherche
 export function mainSearch(query, container) {
-    if (query.length < 3 && currentFilters.length === 0) {
-        displayRecipes(recipes, container);
-        updateRecipeCount(recipes.length);
-        return;
+    // Filtrer les recettes en fonction de la recherche principale
+    let filteredRecipes = recipes;
+    if (query.length >= 3) {
+        const queryLower = query.toLowerCase();
+        filteredRecipes = recipes.filter(recipe => {
+            const nameMatch = recipe.name.toLowerCase().includes(queryLower);
+            const descriptionMatch = recipe.description.toLowerCase().includes(queryLower);
+            const ingredientsMatch = recipe.ingredients.some(ingredient =>
+                ingredient.ingredient.toLowerCase().includes(queryLower)
+            );
+
+            return nameMatch || descriptionMatch || ingredientsMatch;
+        });
     }
 
-    const filteredRecipes = recipes.filter(recipe => {
-        const queryLower = query.toLowerCase();
-        const nameMatch = recipe.name.toLowerCase().includes(queryLower);
-        const descriptionMatch = recipe.description.toLowerCase().includes(queryLower);
-        const ingredientsMatch = recipe.ingredients.some(ingredient =>
-            ingredient.ingredient.toLowerCase().includes(queryLower)
-        );
-
-        const allFiltersMatch = currentFilters.every(filter =>
+    // Appliquer les filtres actifs sur les recettes déjà filtrées
+    currentFilters.forEach(filter => {
+        filteredRecipes = filteredRecipes.filter(recipe =>
             recipe.ingredients.some(ingredient =>
                 ingredient.ingredient.toLowerCase().includes(filter.toLowerCase())
             )
         );
-
-        return nameMatch || descriptionMatch || ingredientsMatch;
     });
 
     displayRecipes(filteredRecipes, container);
@@ -35,6 +37,8 @@ export function mainSearch(query, container) {
 
 export function updateActiveFilters(tags) {
     currentFilters = tags;
+    const query = document.getElementById("search").value.trim();
+    mainSearch(query, document.getElementById("recipes"));
 }
 
 export function displayRecipes(recipesFound, container) {
@@ -101,6 +105,11 @@ export function addTag(tag) {
             lastTagElement.remove();
             updateSearch();
         });
+
+        const tags = Array.from(tagsContainer.children).map(
+            (element) => element.querySelector("p").textContent
+        );
+        updateActiveFilters(tags);
     }
 }
 

@@ -108,15 +108,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
     displayRecipes(recipes, recipesContainer);
 });
-
-function updateSelectOptions(selectId, options) {
-    const selectElement = document.querySelector(`#${selectId} .select-options`);
-    selectElement.innerHTML = "";
-
-    options.forEach(option => {
-        const optionElement = document.createElement("li");
-        optionElement.classList.add("py-4", "hover:bg-customYellow", "cursor-pointer");
-        optionElement.textContent = option;
-        selectElement.appendChild(optionElement);
-    });
-}
