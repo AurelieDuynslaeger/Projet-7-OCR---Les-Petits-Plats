@@ -106,10 +106,9 @@ export function addTag(tag) {
             updateSearch();
         });
 
-        const tags = Array.from(tagsContainer.children).map(
+        updateActiveFilters(Array.from(tagsContainer.children).map(
             (element) => element.querySelector("p").textContent
-        );
-        updateActiveFilters(tags);
+        ));
     }
 }
 
@@ -119,8 +118,8 @@ function updateSearch() {
         (element) => element.querySelector("p").textContent
     );
 
-    const query = tags.join(" ");
-    const recipesContainer = document.getElementById("recipes");
-
-    mainSearch(query, recipesContainer);
+    //mise à jour des filtres après suppression d'un tag
+    updateActiveFilters(tags);
+    const query = document.getElementById("search").value.trim();
+    mainSearch(query, document.getElementById("recipes"));
 }

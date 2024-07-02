@@ -86,7 +86,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const tags = Array.from(tagsContainer.children).map(
             (element) => element.querySelector("p").textContent
         );
+        //mise à jour les filtres actuels
+        currentFilters = tags;
         updateFilters(tags);
+        const query = document.getElementById("search").value.trim();
+        mainSearch(query, recipesContainer);
     }
 
     function updateFilters(tags) {
@@ -94,7 +98,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function clearActiveFilters() {
-        console.log("Filtres effacés");
+        //réinit des filtres actuels
+        currentFilters = [];
+        updateFilters([]);
+        const query = document.getElementById("search").value.trim();
+        mainSearch(query, recipesContainer);
     }
 
     function updateRecipesWithTags() {
