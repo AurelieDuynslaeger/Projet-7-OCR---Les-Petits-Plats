@@ -50,7 +50,7 @@ export function mainSearch(query, container) {
         filteredRecipes = filtered;
     }
 
-    displayRecipes(filteredRecipes, container);
+    displayRecipes(filteredRecipes, container, query);
     updateRecipeCount(filteredRecipes.length);
     updateFilters(filteredRecipes);
 }
@@ -61,11 +61,19 @@ export function updateActiveFilters(tags) {
     mainSearch(query, document.getElementById("recipes"));
 }
 
-export function displayRecipes(recipesFound, container) {
+export function displayRecipes(recipesFound, container, query) {
     container.innerHTML = "";
-    for (let recipe of recipesFound) {
-        const cardHTML = recipeCard(recipe);
-        container.innerHTML += cardHTML;
+    if (recipesFound.length === 0) {
+        container.innerHTML = `
+            <div class="no-recipes">
+                <p class="font-manrope text-2xl">Aucune recette ne contient '${query}', vous pouvez chercher 'tarte aux pommes', 'poisson', etc.</p>
+            </div>
+        `;
+    } else {
+        recipesFound.forEach(recipe => {
+            const cardHTML = recipeCard(recipe);
+            container.innerHTML += cardHTML;
+        });
     }
     const countRecipe = document.getElementById("recipe-count");
     countRecipe.textContent = `${recipesFound.length} recette(s)`;
