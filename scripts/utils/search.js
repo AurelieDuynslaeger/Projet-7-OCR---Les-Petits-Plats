@@ -6,7 +6,7 @@ let currentFilters = [];
 
 // Fonction principale pour effectuer la recherche
 export function mainSearch(query, container) {
-    // Filtrer les recettes en fonction de la recherche principale
+    //filtrer les recettes en fonction de la recherche principale
     let filteredRecipes = recipes;
     if (query.length >= 3) {
         const queryLower = query.toLowerCase();
@@ -26,7 +26,11 @@ export function mainSearch(query, container) {
         filteredRecipes = filteredRecipes.filter(recipe =>
             recipe.ingredients.some(ingredient =>
                 ingredient.ingredient.toLowerCase().includes(filter.toLowerCase())
-            )
+            ) ||
+            recipe.ustensils.some(ustensil =>
+                ustensil.toLowerCase().includes(filter.toLowerCase())
+            ) ||
+            recipe.appliance.toLowerCase().includes(filter.toLowerCase())
         );
     });
 
