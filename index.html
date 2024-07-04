@@ -49,23 +49,27 @@
           <div class="flex flex-wrap -mx-3 mb-2">
               <!-- Ingrédients -->
               <div class="w-1/3 px-3 mb-6 md:mb-0 font-manrope select-container" id="ingredients-select">
-                  <div class="relative">
-                      <div class="block appearance-none w-full border border-gray-200 rounded-lg text-gray-700 bg-white py-3 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                          <div class="select-title cursor-pointer flex items-center justify-between">Ingrédients <i class="fa-solid fa-chevron-down" style="color: #000000;"></i></div>
-                          <div class="select-input-container hidden">
-                              <input type="text" class="select-input block w-full border-b border-gray-200 py-2 focus:outline-none" placeholder="Rechercher un ingrédient...">
-                              <ul class="select-options hidden absolute absolute top-full left-0 z-10 bg-white w-full border border-gray-200 rounded-lg mt-1 max-h-60 overflow-y-hidden">
-                                  <!-- options remplies de façon dynamique -->
-                              </ul>
-                          </div>
-                      </div>
-                  </div>
-              </div>
+                <div class="relative">
+                    <div class="block appearance-none w-full border border-gray-200 rounded-lg text-gray-700 bg-white py-4 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        <div class="select-title cursor-pointer flex items-center justify-between">
+                            Ingrédients <i class="fa-solid fa-chevron-down" style="color: #000000;"></i>
+                        </div>
+                        <div class="select-input-container hidden relative">
+                            <input type="text" class="select-input block w-full border-b border-gray-200 py-2 focus:outline-none">
+                            <i class="fa fa-search absolute right-4 top-2 text-gray-500"></i>
+                            <i class="fa fa-times absolute right-2 top-2 text-gray-500 cursor-pointer hidden" id="clear-input"></i>
+                            <ul class="select-options hidden absolute top-full left-0 z-10 bg-white w-full border border-gray-200 rounded-lg mt-1 max-h-60 overflow-y-auto">
+                                <!-- options remplies de façon dynamique -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
               
               <!-- Appareils -->
               <div class="w-1/3 px-3 mb-6 md:mb-0 font-manrope select-container" id="appliances-select">
                   <div class="relative">
-                      <div class="block appearance-none w-full border border-gray-200 rounded-lg text-gray-700 bg-white py-3 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                      <div class="block appearance-none w-full border border-gray-200 rounded-lg text-gray-700 bg-white py-4 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                         <div class="select-title cursor-pointer flex items-center justify-between">Appareils <i class="fa-solid fa-chevron-down" style="color: #000000;"></i></div>
                           <div class="select-input-container hidden">
                               <input type="text" class="select-input block w-full border-b border-gray-200 py-2 focus:outline-none" placeholder="Rechercher un appareil...">
@@ -80,10 +84,10 @@
               <!-- Ustensiles -->
               <div class="w-1/3 px-3 mb-6 md:mb-0 font-manrope select-container" id="ustensils-select">
                   <div class="relative">
-                      <div class="block appearance-none w-full border border-gray-200 rounded-lg text-gray-700 bg-white py-3 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                      <div class="block appearance-none w-full border border-gray-200 rounded-lg text-gray-700 bg-white py-4 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                         <div class="select-title cursor-pointer flex items-center justify-between">Ustensiles <i class="fa-solid fa-chevron-down" style="color: #000000;"></i></div>
                           <div class="select-input-container hidden">
-                              <input type="text" class="select-input block w-full border-b border-gray-200 py-2 focus:outline-none" placeholder="Rechercher un ustensile...">
+                              <input type="text" class="select-input block w-full border-b border-gray-200 py-4 focus:outline-none" placeholder="Rechercher un ustensile...">
                               <ul class="select-options hidden absolute top-full left-0 z-10 bg-white w-full border border-gray-200 rounded-lg mt-1 max-h-60 overflow-y-hidden">
                                   <!-- options remplies de façon dynamique -->
                               </ul>
