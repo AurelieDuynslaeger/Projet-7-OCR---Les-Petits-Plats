@@ -111,11 +111,13 @@ export function addTag(tag) {
         const tagHTML = searchTag(tag);
         tagsContainer.innerHTML += tagHTML;
 
+        //écouteurs d'événements à tous les éléments de tag
         const tagElements = tagsContainer.querySelectorAll(".tag");
-        const lastTagElement = tagElements[tagElements.length - 1];
-        lastTagElement.querySelector("i").addEventListener("click", () => {
-            lastTagElement.remove();
-            updateSearch();
+        tagElements.forEach(tagElement => {
+            tagElement.querySelector("i").addEventListener("click", () => {
+                tagElement.remove();
+                updateSearch();
+            });
         });
 
         updateActiveFilters(Array.from(tagsContainer.children).map(
