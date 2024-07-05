@@ -6,7 +6,6 @@ let currentFilters = [];
 
 // Fonction principale pour effectuer la recherche
 export function mainSearch(query, container) {
-    //filtrer les recettes en fonction de la recherche principale
     let filteredRecipes = recipes;
     if (query.length >= 3) {
         const queryLower = query.toLowerCase();
@@ -21,7 +20,6 @@ export function mainSearch(query, container) {
         });
     }
 
-    // Appliquer les filtres actifs sur les recettes déjà filtrées
     currentFilters.forEach(filter => {
         filteredRecipes = filteredRecipes.filter(recipe =>
             recipe.ingredients.some(ingredient =>
@@ -41,6 +39,13 @@ export function mainSearch(query, container) {
 
 export function updateActiveFilters(tags) {
     currentFilters = tags;
+    const query = document.getElementById("search").value.trim();
+    mainSearch(query, document.getElementById("recipes"));
+}
+
+export function clearActiveFilters() {
+    currentFilters = [];
+    updateFilters([]);
     const query = document.getElementById("search").value.trim();
     mainSearch(query, document.getElementById("recipes"));
 }
@@ -111,7 +116,6 @@ export function addTag(tag) {
         const tagHTML = searchTag(tag);
         tagsContainer.innerHTML += tagHTML;
 
-        //écouteurs d'événements à tous les éléments de tag
         const tagElements = tagsContainer.querySelectorAll(".tag");
         tagElements.forEach(tagElement => {
             tagElement.querySelector("i").addEventListener("click", () => {
@@ -132,7 +136,6 @@ function updateSearch() {
         (element) => element.querySelector("p").textContent
     );
 
-    //mise à jour des filtres après suppression d'un tag
     updateActiveFilters(tags);
     const query = document.getElementById("search").value.trim();
     mainSearch(query, document.getElementById("recipes"));

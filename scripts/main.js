@@ -1,5 +1,5 @@
 import recipes from "./../data/recipes.js";
-import { addTag, displayRecipes, mainSearch } from "./utils/search.js";
+import { addTag, displayRecipes, mainSearch, updateActiveFilters, clearActiveFilters } from "./utils/search.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const recipesContainer = document.getElementById("recipes");
@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const performSearch = (query) => {
         if (query.length >= 3) {
             mainSearch(query, recipesContainer);
-            updateActiveFilters();
         }
         inputSearch.value = "";
     };
@@ -38,16 +37,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    const setupCustomSelect = (selectId) => {
+    const setupDropdownSearch = (dropdownId, selectId) => {
+        const dropdownButton = document.getElementById(dropdownId);
         const selectContainer = document.getElementById(selectId);
-        const title = selectContainer.querySelector(".select-title");
-        const inputContainer = selectContainer.querySelector(".select-input-container");
         const input = selectContainer.querySelector(".select-input");
         const options = selectContainer.querySelector(".select-options");
 
-        title.addEventListener("click", () => {
-            inputContainer.classList.toggle("hidden");
-            options.classList.toggle("hidden");
+        dropdownButton.addEventListener("click", () => {
+            selectContainer.classList.toggle("hidden");
             input.focus();
         });
 
@@ -70,40 +67,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 addTag(selectedOption);
                 updateActiveFilters();
                 updateRecipesWithTags();
-                inputContainer.classList.add("hidden");
-                options.classList.add("hidden");
+                selectContainer.classList.add("hidden");
                 input.value = "";
             }
         });
     };
 
-    setupCustomSelect("ingredients-select");
-    setupCustomSelect("appliances-select");
-    setupCustomSelect("ustensils-select");
-
-    function updateActiveFilters() {
-        const tagsContainer = document.getElementById("tags");
-        const tags = Array.from(tagsContainer.children).map(
-            (element) => element.querySelector("p").textContent
-        );
-        //mise à jour les filtres actuels
-        currentFilters = tags;
-        updateFilters(tags);
-        const query = document.getElementById("search").value.trim();
-        mainSearch(query, recipesContainer);
-    }
-
-    function updateFilters(tags) {
-        console.log("Filtres mis à jour :", tags);
-    }
-
-    function clearActiveFilters() {
-        //réinit des filtres actuels
-        currentFilters = [];
-        updateFilters([]);
-        const query = document.getElementById("search").value.trim();
-        mainSearch(query, recipesContainer);
-    }
+    setupDropdownSearch("dropdownSearchButtonIngredients", "ingredients-select");
+    setupDropdownSearch("dropdownSearchButtonAppliances", "appliances-select");
+    setupDropdownSearch("dropdownSearchButtonUstensils", "ustensils-select");
 
     function updateRecipesWithTags() {
         const tagsContainer = document.getElementById("tags");
