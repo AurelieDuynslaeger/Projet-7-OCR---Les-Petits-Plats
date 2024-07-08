@@ -4,7 +4,7 @@ export function displayRecipes(recipesFound, container, query = "", tags = []) {
     container.innerHTML = "";
 
     if (recipesFound.length === 0 && tags.length > 0) {
-        const errorMessage = tags.join(', ');
+        const errorMessage = query ? query : tags.join(', ');
         container.innerHTML = `
             <div class="no-recipes">
                 <p class="font-manrope text-2xl">Aucune recette ne contient '${errorMessage}', vous pouvez chercher 'tarte aux pommes', 'poisson', etc.</p>

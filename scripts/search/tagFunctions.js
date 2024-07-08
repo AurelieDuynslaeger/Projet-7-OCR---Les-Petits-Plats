@@ -27,6 +27,7 @@ export function addTag(tag) {
     }
 }
 
+
 export function updateSearch() {
     const tagsContainer = document.getElementById("tags");
     const tags = Array.from(tagsContainer.children).map(
@@ -35,3 +36,6 @@ export function updateSearch() {
     updateActiveFilters(tags);
     applyFilters(tags, document.getElementById("recipes"));
 }
+
+
+
