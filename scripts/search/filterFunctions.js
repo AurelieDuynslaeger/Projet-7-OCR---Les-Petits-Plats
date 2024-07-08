@@ -1,5 +1,6 @@
 import { addTag, updateSearch } from "./tagFunctions.js";
 
+
 let currentFilters = [];
 
 // Fonction pour initialiser un dropdown avec les événements

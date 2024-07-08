@@ -51,9 +51,8 @@ export function applyFilters(tags, container) {
     let filteredRecipes = searchResults;
 
     if (tags.length > 0) {
-        tags = tags.map(tag => tag.toLowerCase());
-        filteredRecipes = filteredRecipes.filter(recipe =>
-            tags.every(tag =>
+        tags.forEach(tag => {
+            filteredRecipes = filteredRecipes.filter(recipe =>
                 recipe.ingredients.some(ingredient =>
                     ingredient.ingredient.toLowerCase().includes(tag)
                 ) ||
@@ -61,14 +60,15 @@ export function applyFilters(tags, container) {
                     ustensil.toLowerCase().includes(tag)
                 ) ||
                 recipe.appliance.toLowerCase().includes(tag)
-            )
-        );
+            );
+        });
     }
 
-    // Afficher les recettes filtrées
     displayRecipes(filteredRecipes, container, '', tags);
     updateRecipeCount(filteredRecipes.length);
 }
+
+
 
 // Fonction pour collecter tous les ingrédients uniques
 function collectUniqueIngredients(recipes) {
