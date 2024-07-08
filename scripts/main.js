@@ -1,10 +1,8 @@
 import recipes from "./../data/recipes.js";
-import { initializeDropdowns, mainSearch } from "./search/searchFunctions.js";
+import { initializeDropdowns, mainSearch, applyFilters } from "./search/searchFunctions.js";
 import { displayRecipes } from "./search/displayFunctions.js";
 import { updateSearch } from "./search/tagFunctions.js";
 import { clearActiveFilters } from "./search/filterFunctions.js";
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
     const recipesContainer = document.getElementById("recipes");
@@ -15,12 +13,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // Chargement initial des dropdowns avec les données des recettes
     initializeDropdowns();
 
-    const performSearch = (query) => {
-        if (query.length >= 3) {
-            mainSearch(query, recipesContainer);
-            updateSearch();
+    const performSearch = (query, tags = []) => {
+        if (query.length >= 3 || tags.length > 0) {
+            mainSearch(query, recipesContainer); // Recherche principale par mot-clé
+            updateSearch(); // Met à jour les filtres actifs (tags)
+        } else {
+            displayRecipes(recipes, recipesContainer, query, tags); // Affiche toutes les recettes si la recherche est vide
+            clearActiveFilters(); // Réinitialise les filtres actifs
         }
-        inputSearch.value = "";
+        inputSearch.value = ""; // Réinitialise la valeur de l'input de recherche après la recherche
     };
 
     searchForm.addEventListener("submit", (event) => {
@@ -40,13 +41,20 @@ document.addEventListener("DOMContentLoaded", () => {
         const query = event.target.value.trim();
         if (query.length >= 3) {
             mainSearch(query, recipesContainer);
-            updateSearch();  // Applique les filtres actifs après la recherche principale
+            updateSearch();
         } else {
             displayRecipes(recipes, recipesContainer);
             clearActiveFilters();
         }
     });
 
+    // Écouteur d'événement pour les dropdowns où les utilisateurs choisissent les tags
+    document.querySelectorAll(".select-options").forEach(selectOptions => {
+        selectOptions.addEventListener("click", (event) => {
+            const selectedTag = event.target.textContent.trim();
+            performSearch("", [selectedTag]); // Appel performSearch avec le tag sélectionné
+        });
+    });;
+
     displayRecipes(recipes, recipesContainer);
 });
-

@@ -1,11 +1,13 @@
-import { recipeCard } from "../templates/recipeCard.js"
+import { recipeCard } from "../templates/recipeCard.js";
 
-export function displayRecipes(recipesFound, container, query) {
+export function displayRecipes(recipesFound, container, query = "", tags = []) {
     container.innerHTML = "";
-    if (recipesFound.length === 0) {
+
+    if (recipesFound.length === 0 && tags.length > 0) {
+        const errorMessage = tags.join(', ');
         container.innerHTML = `
             <div class="no-recipes">
-                <p class="font-manrope text-2xl">Aucune recette ne contient '${query}', vous pouvez chercher 'tarte aux pommes', 'poisson', etc.</p>
+                <p class="font-manrope text-2xl">Aucune recette ne contient '${errorMessage}', vous pouvez chercher 'tarte aux pommes', 'poisson', etc.</p>
             </div>
         `;
     } else {
@@ -14,6 +16,7 @@ export function displayRecipes(recipesFound, container, query) {
             container.innerHTML += cardHTML;
         });
     }
+
     const countRecipe = document.getElementById("recipe-count");
     countRecipe.textContent = `${recipesFound.length} recette(s)`;
 }
@@ -31,10 +34,10 @@ export function updateFilters(filteredRecipes) {
 
     filteredRecipes.forEach(recipe => {
         recipe.ingredients.forEach(ingredient =>
-            ingredients.push(ingredient.ingredient)
+            ingredients.push(ingredient.ingredient.toLowerCase()) // Convertir en minuscules
         );
-        appliances.push(recipe.appliance);
-        recipe.ustensils.forEach(ustensil => ustensils.push(ustensil));
+        appliances.push(recipe.appliance.toLowerCase()); // Convertir en minuscules
+        recipe.ustensils.forEach(ustensil => ustensils.push(ustensil.toLowerCase())); // Convertir en minuscules
     });
 
     ingredients = [...new Set(ingredients)];

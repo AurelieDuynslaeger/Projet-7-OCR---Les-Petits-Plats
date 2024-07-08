@@ -1,6 +1,5 @@
 import { addTag, updateSearch } from "./tagFunctions.js";
 
-
 let currentFilters = [];
 
 // Fonction pour initialiser un dropdown avec les événements
@@ -11,7 +10,7 @@ export function setupDropdown(dropdownId, selectId) {
     const options = selectContainer.querySelector(".select-options");
 
     dropdownButton.addEventListener("click", (event) => {
-        event.preventDefault(); // Empêcher la soumission du formulaire
+        event.preventDefault();
         selectContainer.classList.toggle("hidden");
         input.focus();
     });
@@ -31,21 +30,20 @@ export function setupDropdown(dropdownId, selectId) {
 
     options.addEventListener("click", (event) => {
         if (event.target.tagName === "LI") {
-            const selectedOption = event.target.textContent;
-            addTag(selectedOption); // Fonction à implémenter pour ajouter le tag sélectionné
-            updateActiveFilters(); // Fonction à implémenter pour mettre à jour les filtres actifs
-            updateSearch(); // Fonction à implémenter pour mettre à jour les recettes avec les tags
+            const selectedOption = event.target.textContent.toLowerCase();
+            addTag(selectedOption);
+            updateActiveFilters();
+            updateSearch();
             selectContainer.classList.add("hidden");
             input.value = "";
         }
     });
 }
 
-
 export function updateActiveFilters() {
     const tagsContainer = document.getElementById("tags");
     currentFilters = Array.from(tagsContainer.children).map(
-        (element) => element.querySelector("p").textContent
+        (element) => element.querySelector("p").textContent.toLowerCase()
     );
 }
 

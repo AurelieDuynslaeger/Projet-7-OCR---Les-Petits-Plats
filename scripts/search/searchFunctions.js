@@ -1,9 +1,12 @@
+// searchFunctions.js
+
 import recipes from "../../data/recipes.js";
 import { displayRecipes, updateRecipeCount, updateFilters, updateSelectOptions } from "./displayFunctions.js";
 import { setupDropdown } from "./filterFunctions.js";
 
+let searchResults = [];
 
-//Fonction principale pour effectuer la recherche
+// Fonction principale pour effectuer la recherche
 export function mainSearch(query, container) {
     searchResults = recipes;
 
@@ -48,30 +51,30 @@ export function applyFilters(tags, container) {
     let filteredRecipes = searchResults;
 
     if (tags.length > 0) {
-        tags.forEach(filter => {
-            filteredRecipes = filteredRecipes.filter(recipe =>
+        tags = tags.map(tag => tag.toLowerCase());
+        filteredRecipes = filteredRecipes.filter(recipe =>
+            tags.every(tag =>
                 recipe.ingredients.some(ingredient =>
-                    ingredient.ingredient.toLowerCase().includes(filter.toLowerCase())
+                    ingredient.ingredient.toLowerCase().includes(tag)
                 ) ||
                 recipe.ustensils.some(ustensil =>
-                    ustensil.toLowerCase().includes(filter.toLowerCase())
+                    ustensil.toLowerCase().includes(tag)
                 ) ||
-                recipe.appliance.toLowerCase().includes(filter.toLowerCase())
-            );
-        });
+                recipe.appliance.toLowerCase().includes(tag)
+            )
+        );
     }
 
     // Afficher les recettes filtrées
-    displayRecipes(filteredRecipes, container);
+    displayRecipes(filteredRecipes, container, '', tags);
     updateRecipeCount(filteredRecipes.length);
 }
-
 
 // Fonction pour collecter tous les ingrédients uniques
 function collectUniqueIngredients(recipes) {
     const ingredientsSet = new Set();
     recipes.forEach(recipe => {
-        recipe.ingredients.forEach(ingredient => ingredientsSet.add(ingredient.ingredient));
+        recipe.ingredients.forEach(ingredient => ingredientsSet.add(ingredient.ingredient.toLowerCase()));
     });
     return Array.from(ingredientsSet);
 }
@@ -79,7 +82,7 @@ function collectUniqueIngredients(recipes) {
 // Fonction pour collecter tous les appareils uniques
 function collectUniqueAppliances(recipes) {
     const appliancesSet = new Set();
-    recipes.forEach(recipe => appliancesSet.add(recipe.appliance));
+    recipes.forEach(recipe => appliancesSet.add(recipe.appliance.toLowerCase()));
     return Array.from(appliancesSet);
 }
 
@@ -87,7 +90,7 @@ function collectUniqueAppliances(recipes) {
 function collectUniqueUstensils(recipes) {
     const ustensilsSet = new Set();
     recipes.forEach(recipe => {
-        recipe.ustensils.forEach(ustensil => ustensilsSet.add(ustensil));
+        recipe.ustensils.forEach(ustensil => ustensilsSet.add(ustensil.toLowerCase()));
     });
     return Array.from(ustensilsSet);
 }
