@@ -3,13 +3,16 @@ import { recipeCard } from "../templates/recipeCard.js";
 import { searchTag } from "../templates/tag.js";
 
 let currentFilters = [];
+let searchResults = [];
 
 // Fonction principale pour effectuer la recherche
 export function mainSearch(query, container) {
-    let filteredRecipes = recipes;
+    searchResults = recipes;
+
+    // Filtrer les recettes en fonction de la recherche principale (query)
     if (query.length >= 3) {
         const queryLower = query.toLowerCase();
-        filteredRecipes = recipes.filter(recipe => {
+        searchResults = recipes.filter(recipe => {
             const nameMatch = recipe.name.toLowerCase().includes(queryLower);
             const descriptionMatch = recipe.description.toLowerCase().includes(queryLower);
             const ingredientsMatch = recipe.ingredients.some(ingredient =>
@@ -20,34 +23,44 @@ export function mainSearch(query, container) {
         });
     }
 
-    currentFilters.forEach(filter => {
-        filteredRecipes = filteredRecipes.filter(recipe =>
-            recipe.ingredients.some(ingredient =>
-                ingredient.ingredient.toLowerCase().includes(filter.toLowerCase())
-            ) ||
-            recipe.ustensils.some(ustensil =>
-                ustensil.toLowerCase().includes(filter.toLowerCase())
-            ) ||
-            recipe.appliance.toLowerCase().includes(filter.toLowerCase())
-        );
-    });
-
-    displayRecipes(filteredRecipes, container, query);
-    updateRecipeCount(filteredRecipes.length);
-    updateFilters(filteredRecipes);
+    // Afficher les recettes filtrées dans le conteneur spécifié
+    displayRecipes(searchResults, container, query);
+    updateRecipeCount(searchResults.length);
+    updateFilters(searchResults);
 }
 
-export function updateActiveFilters(tags) {
-    currentFilters = tags;
-    const query = document.getElementById("search").value.trim();
-    mainSearch(query, document.getElementById("recipes"));
+// Applique les filtres actifs aux résultats de recherche
+export function applyFilters(tags, container) {
+    let filteredRecipes = searchResults;
+
+    if (tags.length > 0) {
+        tags.forEach(filter => {
+            filteredRecipes = filteredRecipes.filter(recipe =>
+                recipe.ingredients.some(ingredient =>
+                    ingredient.ingredient.toLowerCase().includes(filter.toLowerCase())
+                ) ||
+                recipe.ustensils.some(ustensil =>
+                    ustensil.toLowerCase().includes(filter.toLowerCase())
+                ) ||
+                recipe.appliance.toLowerCase().includes(filter.toLowerCase())
+            );
+        });
+    }
+
+    // Afficher les recettes filtrées
+    displayRecipes(filteredRecipes, container);
+    updateRecipeCount(filteredRecipes.length);
+}
+
+export function updateActiveFilters() {
+    const tagsContainer = document.getElementById("tags");
+    currentFilters = Array.from(tagsContainer.children).map(
+        (element) => element.querySelector("p").textContent
+    );
 }
 
 export function clearActiveFilters() {
     currentFilters = [];
-    updateFilters([]);
-    const query = document.getElementById("search").value.trim();
-    mainSearch(query, document.getElementById("recipes"));
 }
 
 export function displayRecipes(recipesFound, container, query) {
@@ -80,7 +93,8 @@ function updateFilters(filteredRecipes) {
 
     filteredRecipes.forEach(recipe => {
         recipe.ingredients.forEach(ingredient =>
-            ingredients.push(ingredient.ingredient));
+            ingredients.push(ingredient.ingredient)
+        );
         appliances.push(recipe.appliance);
         recipe.ustensils.forEach(ustensil => ustensils.push(ustensil));
     });
@@ -135,8 +149,6 @@ function updateSearch() {
     const tags = Array.from(tagsContainer.children).map(
         (element) => element.querySelector("p").textContent
     );
-
     updateActiveFilters(tags);
-    const query = document.getElementById("search").value.trim();
-    mainSearch(query, document.getElementById("recipes"));
+    applyFilters(tags, document.getElementById("recipes"));
 }
