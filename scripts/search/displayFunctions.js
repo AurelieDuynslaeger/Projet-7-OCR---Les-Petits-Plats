@@ -1,6 +1,4 @@
-
-import { updateSelectOptions } from "./displayFunctions.js";
-
+import { recipeCard } from "../templates/recipeCard.js"
 
 export function displayRecipes(recipesFound, container, query) {
     container.innerHTML = "";

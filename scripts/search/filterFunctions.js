@@ -1,4 +1,4 @@
-import { addTag, updateSearch } from "./tagFunctions";
+import { addTag, updateSearch } from "./tagFunctions.js";
 
 
 let currentFilters = [];

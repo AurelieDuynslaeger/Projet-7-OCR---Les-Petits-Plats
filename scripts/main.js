@@ -1,7 +1,8 @@
 import recipes from "./../data/recipes.js";
-import { initializeDropdowns, mainSearch, clearActiveFilters } from "./search/searchFunctions.js";
+import { initializeDropdowns, mainSearch } from "./search/searchFunctions.js";
 import { displayRecipes } from "./search/displayFunctions.js";
 import { updateSearch } from "./search/tagFunctions.js";
+import { clearActiveFilters } from "./search/filterFunctions.js";
 
 
 

@@ -1,4 +1,6 @@
-import { updateActiveFilters, applyFilters } from "./searchFunctions.js";
+import { applyFilters } from "./searchFunctions.js";
+
+import { updateActiveFilters } from "./filterFunctions.js";
 
 import { searchTag } from "../templates/tag.js";
 
