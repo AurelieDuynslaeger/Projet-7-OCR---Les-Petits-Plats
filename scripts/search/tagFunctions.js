@@ -1,5 +1,5 @@
 import { updateActiveFilters, applyFilters } from "./searchFunctions.js";
-import { displayRecipes } from "./displayFunctions.js";
+
 import { searchTag } from "../templates/tag.js";
 
 

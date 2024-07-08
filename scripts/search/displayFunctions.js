@@ -1,4 +1,4 @@
-import recipes from "../../data/recipes.js";
+
 import { updateSelectOptions } from "./displayFunctions.js";
 
 
