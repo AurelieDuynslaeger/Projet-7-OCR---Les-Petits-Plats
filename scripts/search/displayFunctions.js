@@ -4,8 +4,8 @@ export function displayRecipes(recipesFound, container, query = "", tags = []) {
     container.innerHTML = "";
 
     // Vérifier si aucune recette n'a été trouvée et que la recherche était spécifiée
-    if (recipesFound.length === 0 && tags.length > 0) {
-        const errorMessage = query ? query : tags.join(', ');
+    if (recipesFound.length === 0 && (query.length > 0 || tags.length > 0)) {
+        const errorMessage = query.length > 0 ? query : tags.join(', ');
         container.innerHTML = `
             <div class="no-recipes">
                 <p class="font-manrope text-2xl">Aucune recette ne contient '${errorMessage}', vous pouvez chercher 'tarte aux pommes', 'poisson', etc.</p>
@@ -24,6 +24,7 @@ export function displayRecipes(recipesFound, container, query = "", tags = []) {
 
 
 
+
 export function updateRecipeCount(count) {
     const countRecipe = document.getElementById("recipe-count");
     countRecipe.textContent = `${count} recette(s)`;
@@ -36,10 +37,10 @@ export function updateFilters(filteredRecipes) {
 
     filteredRecipes.forEach(recipe => {
         recipe.ingredients.forEach(ingredient =>
-            ingredients.push(ingredient.ingredient.toLowerCase()) // Convertir en minuscules
+            ingredients.push(ingredient.ingredient.toLowerCase())
         );
-        appliances.push(recipe.appliance.toLowerCase()); // Convertir en minuscules
-        recipe.ustensils.forEach(ustensil => ustensils.push(ustensil.toLowerCase())); // Convertir en minuscules
+        appliances.push(recipe.appliance.toLowerCase());
+        recipe.ustensils.forEach(ustensil => ustensils.push(ustensil.toLowerCase()));
     });
 
     ingredients = [...new Set(ingredients)];

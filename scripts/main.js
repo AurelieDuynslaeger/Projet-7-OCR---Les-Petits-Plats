@@ -37,9 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     const performSearch = (query, tags = []) => {
-        console.log('saisie initiale xss:', query);
         const checkedInput = escapeHtml(query);
-        console.log('saisie transformée', checkedInput);
         if (checkedInput.length >= 3 || tags.length > 0) {
             mainSearch(checkedInput, recipesContainer);
             applyFilters(tags, recipesContainer);
@@ -48,8 +46,19 @@ document.addEventListener("DOMContentLoaded", () => {
             displayRecipes(recipes, recipesContainer, checkedInput, []);
             clearActiveFilters();
         }
-
     };
+
+
+    searchIcon.addEventListener("click", () => {
+        const query = inputSearch.value.trim();
+        if (query.length >= 3) {
+            performSearch(query, getActiveTags());
+            updateSearch();
+        } else {
+            displayRecipes(recipes, recipesContainer);
+            clearActiveFilters();
+        }
+    });
 
 
     searchForm.addEventListener("submit", (event) => {
@@ -74,6 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".select-options").forEach(selectOptions => {
         selectOptions.addEventListener("click", (event) => {
             const selectedTag = event.target.textContent.trim();
+            console.log("Tag selected:", selectedTag);
+
             performSearch(inputSearch.value.trim(), [selectedTag, ...getActiveTags()]);
         });
     });

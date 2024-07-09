@@ -1,9 +1,8 @@
 import { addTag, updateSearch } from "./tagFunctions.js";
 
-
 let currentFilters = [];
 
-// Fonction pour initialiser un dropdown avec les événements
+//fonction pour initialiser un dropdown avec les événements
 export function setupDropdown(dropdownId, selectId) {
     const dropdownButton = document.getElementById(dropdownId);
     const selectContainer = document.getElementById(selectId);

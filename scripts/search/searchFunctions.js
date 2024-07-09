@@ -4,11 +4,12 @@ import { setupDropdown } from "./filterFunctions.js";
 
 let searchResults = [];
 
-// Fonction principale pour effectuer la recherche
+//fonction principale pour effectuer la recherche
 export function mainSearch(query, container) {
+    console.log("Recherche principale - Query:", query);
     searchResults = recipes;
 
-    // Filtrer les recettes en fonction de la recherche principale (query)
+    //filtrer les recettes en fonction de la recherche principale (query)
     if (query.length >= 3) {
         const queryLower = query.toLowerCase();
         searchResults = recipes.filter(recipe => {
@@ -21,14 +22,14 @@ export function mainSearch(query, container) {
             return nameMatch || descriptionMatch || ingredientsMatch;
         });
     }
-
-    // Afficher les recettes filtrées dans le conteneur spécifié
+    console.log("Résultats après recherche principale:", searchResults);
+    //afficher les recettes filtrées dans le conteneur spécifié
     displayRecipes(searchResults, container, query.trim());
     updateRecipeCount(searchResults.length);
     updateFilters(searchResults);
 }
 
-// Fonction pour initialiser chaque dropdown avec les données des recettes
+//fonction pour initialiser chaque dropdown avec les données des recettes
 export function initializeDropdowns() {
     const ingredients = collectUniqueIngredients(recipes);
     const appliances = collectUniqueAppliances(recipes);
@@ -38,37 +39,34 @@ export function initializeDropdowns() {
     updateSelectOptions("appliances-select", appliances);
     updateSelectOptions("ustensils-select", ustensils);
 
-    // Initialisation des écouteurs pour les dropdowns
+    //initialisation des écouteurs pour les dropdowns
     setupDropdown("dropdownSearchButtonIngredients", "ingredients-select");
     setupDropdown("dropdownSearchButtonUstensils", "ustensils-select");
     setupDropdown("dropdownSearchButtonAppliances", "appliances-select");
 }
 
-// Applique les filtres actifs aux résultats de recherche
+//applique les filtres actifs aux résultats de recherche
 export function applyFilters(tags, container) {
-    let filteredRecipes = searchResults;
+    let filteredRecipes = [...searchResults];
 
-    if (tags.length > 0) {
-        tags.forEach(tag => {
-            filteredRecipes = filteredRecipes.filter(recipe =>
-                recipe.ingredients.some(ingredient =>
-                    ingredient.ingredient.toLowerCase().includes(tag)
-                ) ||
-                recipe.ustensils.some(ustensil =>
-                    ustensil.toLowerCase().includes(tag)
-                ) ||
-                recipe.appliance.toLowerCase().includes(tag)
-            );
-        });
-    }
+    tags.forEach(tag => {
+        filteredRecipes = filteredRecipes.filter(recipe =>
+            recipe.ingredients.some(ingredient =>
+                ingredient.ingredient.toLowerCase().includes(tag)
+            ) ||
+            recipe.ustensils.some(ustensil =>
+                ustensil.toLowerCase().includes(tag)
+            ) ||
+            recipe.appliance.toLowerCase().includes(tag)
+        );
+    });
 
     displayRecipes(filteredRecipes, container, '', tags);
     updateRecipeCount(filteredRecipes.length);
 }
 
 
-
-// Fonction pour collecter tous les ingrédients uniques
+//fonction pour collecter tous les ingrédients uniques
 function collectUniqueIngredients(recipes) {
     const ingredientsSet = new Set();
     recipes.forEach(recipe => {
@@ -77,14 +75,14 @@ function collectUniqueIngredients(recipes) {
     return Array.from(ingredientsSet);
 }
 
-// Fonction pour collecter tous les appareils uniques
+//fonction pour collecter tous les appareils uniques
 function collectUniqueAppliances(recipes) {
     const appliancesSet = new Set();
     recipes.forEach(recipe => appliancesSet.add(recipe.appliance.toLowerCase()));
     return Array.from(appliancesSet);
 }
 
-// Fonction pour collecter tous les ustensiles uniques
+//fonction pour collecter tous les ustensiles uniques
 function collectUniqueUstensils(recipes) {
     const ustensilsSet = new Set();
     recipes.forEach(recipe => {
