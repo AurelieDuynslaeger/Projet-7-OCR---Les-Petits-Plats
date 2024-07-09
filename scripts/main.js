@@ -31,9 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const performSearch = (query, tags = []) => {
         const checkedInput = escapeHtml(query);
+        console.log(checkedInput);
         if (checkedInput.length >= 3 || tags.length > 0) {
+            console.log(checkedInput);
             mainSearch(checkedInput, recipesContainer);
-            applyFilters(tags, recipesContainer);
+            applyFilters(tags, recipesContainer, checkedInput); // Pass query to applyFilters
             updateSearch();
         } else {
             displayRecipes(recipes, recipesContainer, checkedInput, []);
@@ -64,4 +66,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
     displayRecipes(recipes, recipesContainer);
 });
-

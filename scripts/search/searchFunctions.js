@@ -4,14 +4,15 @@ import { setupDropdown } from "./filterFunctions.js";
 
 let searchResults = [];
 
-//fonction principale pour effectuer la recherche
+
+// Fonction principale pour effectuer la recherche
 export function mainSearch(query, container) {
     console.log("Recherche principale - Query:", query);
     searchResults = recipes;
 
-    //filtrer les recettes en fonction de la recherche principale (query)
+    // Filtrer les recettes en fonction de la recherche principale (query)
     if (query.length >= 3) {
-        const queryLower = query.toLowerCase();
+        const queryLower = query.trim().toLowerCase();
         searchResults = recipes.filter(recipe => {
             const nameMatch = recipe.name.toLowerCase().includes(queryLower);
             const descriptionMatch = recipe.description.toLowerCase().includes(queryLower);
@@ -22,9 +23,11 @@ export function mainSearch(query, container) {
             return nameMatch || descriptionMatch || ingredientsMatch;
         });
     }
+
     console.log("Résultats après recherche principale:", searchResults);
-    //afficher les recettes filtrées dans le conteneur spécifié
-    displayRecipes(searchResults, container, query.trim());
+
+    // Afficher les recettes filtrées ou le message d'erreur
+    displayRecipes(searchResults, container, query);
     updateRecipeCount(searchResults.length);
     updateFilters(searchResults);
 }
@@ -46,7 +49,7 @@ export function initializeDropdowns() {
 }
 
 //applique les filtres actifs aux résultats de recherche
-export function applyFilters(tags, container) {
+export function applyFilters(tags, container, query = "") {
     let filteredRecipes = [...searchResults];
 
     tags.forEach(tag => {
@@ -61,9 +64,10 @@ export function applyFilters(tags, container) {
         );
     });
 
-    displayRecipes(filteredRecipes, container, '', tags);
+    displayRecipes(filteredRecipes, container, query, tags);
     updateRecipeCount(filteredRecipes.length);
 }
+
 
 
 //fonction pour collecter tous les ingrédients uniques
