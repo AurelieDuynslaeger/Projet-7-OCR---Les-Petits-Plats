@@ -1,33 +1,16 @@
-// searchFunctions.js
-
 import recipes from "../../data/recipes.js";
 import { displayRecipes, updateRecipeCount, updateFilters, updateSelectOptions } from "./displayFunctions.js";
 import { setupDropdown } from "./filterFunctions.js";
 
 let searchResults = [];
 
-function escapeHtml(text) {
-    //caractères spéciaux HTML à leurs équivalents échappés
-    var map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-    };
-    //recherche tous les caractères dans le texte
-    //puis remplace chaque occurence trouvée par la valeur correspondante
-    return text.replace(/[&<>"']/g, function (m) { return map[m]; });
-}
-
 // Fonction principale pour effectuer la recherche
 export function mainSearch(query, container) {
-    const checkedInput = escapeHtml(query);
     searchResults = recipes;
 
     // Filtrer les recettes en fonction de la recherche principale (query)
-    if (checkedInput.length >= 3) {
-        const queryLower = checkedInput.toLowerCase();
+    if (query.length >= 3) {
+        const queryLower = query.toLowerCase();
         searchResults = recipes.filter(recipe => {
             const nameMatch = recipe.name.toLowerCase().includes(queryLower);
             const descriptionMatch = recipe.description.toLowerCase().includes(queryLower);
@@ -40,7 +23,7 @@ export function mainSearch(query, container) {
     }
 
     // Afficher les recettes filtrées dans le conteneur spécifié
-    displayRecipes(searchResults, container, query);
+    displayRecipes(searchResults, container, query.trim());
     updateRecipeCount(searchResults.length);
     updateFilters(searchResults);
 }

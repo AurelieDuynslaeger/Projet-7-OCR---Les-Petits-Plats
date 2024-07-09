@@ -3,6 +3,7 @@ import { recipeCard } from "../templates/recipeCard.js";
 export function displayRecipes(recipesFound, container, query = "", tags = []) {
     container.innerHTML = "";
 
+    // Vérifier si aucune recette n'a été trouvée et que la recherche était spécifiée
     if (recipesFound.length === 0 && tags.length > 0) {
         const errorMessage = query ? query : tags.join(', ');
         container.innerHTML = `
@@ -20,6 +21,7 @@ export function displayRecipes(recipesFound, container, query = "", tags = []) {
     const countRecipe = document.getElementById("recipe-count");
     countRecipe.textContent = `${recipesFound.length} recette(s)`;
 }
+
 
 
 export function updateRecipeCount(count) {

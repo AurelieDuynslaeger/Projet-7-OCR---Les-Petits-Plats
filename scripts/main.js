@@ -21,13 +21,31 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     };
 
+    function escapeHtml(text) {
+        //caractères spéciaux HTML à leurs équivalents échappés
+        var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        //recherche tous les caractères dans le texte
+        //puis remplace chaque occurence trouvée par la valeur correspondante
+        return text.replace(/[&<>"']/g, function (m) { return map[m]; });
+    }
+
+
     const performSearch = (query, tags = []) => {
-        if (query.length >= 3 || tags.length > 0) {
-            mainSearch(query, recipesContainer);
+        console.log('saisie initiale xss:', query);
+        const checkedInput = escapeHtml(query);
+        console.log('saisie transformée', checkedInput);
+        if (checkedInput.length >= 3 || tags.length > 0) {
+            mainSearch(checkedInput, recipesContainer);
             applyFilters(tags, recipesContainer);
             updateSearch();
         } else {
-            displayRecipes(recipes, recipesContainer, query, []);
+            displayRecipes(recipes, recipesContainer, checkedInput, []);
             clearActiveFilters();
         }
 
