@@ -1,5 +1,9 @@
 import recipes from "./../data/recipes.js";
-import { addTag, displayRecipes, mainSearch } from "./utils/search.js";
+import { initializeDropdowns, mainSearch, applyFilters } from "./search/searchFunctions.js";
+import { displayRecipes } from "./search/displayFunctions.js";
+import { updateSearch } from "./search/tagFunctions.js";
+
+import { clearActiveFilters } from "./search/filterFunctions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const recipesContainer = document.getElementById("recipes");
@@ -7,106 +11,54 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchForm = document.getElementById("search-form");
     const searchIcon = document.getElementById("search-icon");
 
-    const performSearch = (query) => {
-        if (query.length >= 3) {
-            mainSearch(query, recipesContainer);
-            updateActiveFilters();
-        }
-        inputSearch.value = "";
+    // Chargement initial des dropdowns avec les données des recettes
+    initializeDropdowns();
+
+    const getActiveTags = () => {
+        const tagsContainer = document.getElementById("tags");
+        return Array.from(tagsContainer.children).map(
+            (element) => element.querySelector("p").textContent.toLowerCase()
+        );
     };
+
+    const performSearch = (query, tags = []) => {
+        if (query.length >= 3 || tags.length > 0) {
+            mainSearch(query, recipesContainer);
+            applyFilters(tags, recipesContainer);
+            updateSearch();
+        } else {
+            displayRecipes(recipes, recipesContainer, query, []);
+            clearActiveFilters();
+        }
+
+    };
+
 
     searchForm.addEventListener("submit", (event) => {
         event.preventDefault();
         const query = inputSearch.value.trim();
-        performSearch(query);
+        performSearch(query, getActiveTags());
+        inputSearch.value = "";
     });
-
-    if (searchIcon) {
-        searchIcon.addEventListener("click", () => {
-            const query = inputSearch.value.trim();
-            performSearch(query);
-        });
-    }
 
     inputSearch.addEventListener("input", (event) => {
         const query = event.target.value.trim();
         if (query.length >= 3) {
-            mainSearch(query, recipesContainer);
+            performSearch(query, getActiveTags());
+            updateSearch();
         } else {
             displayRecipes(recipes, recipesContainer);
             clearActiveFilters();
         }
     });
 
-    const setupCustomSelect = (selectId) => {
-        const selectContainer = document.getElementById(selectId);
-        const title = selectContainer.querySelector(".select-title");
-        const inputContainer = selectContainer.querySelector(".select-input-container");
-        const input = selectContainer.querySelector(".select-input");
-        const options = selectContainer.querySelector(".select-options");
-
-        title.addEventListener("click", () => {
-            inputContainer.classList.toggle("hidden");
-            options.classList.toggle("hidden");
-            input.focus();
+    // Écouteur d'événement pour les dropdowns où les utilisateurs choisissent les tags
+    document.querySelectorAll(".select-options").forEach(selectOptions => {
+        selectOptions.addEventListener("click", (event) => {
+            const selectedTag = event.target.textContent.trim();
+            performSearch(inputSearch.value.trim(), [selectedTag, ...getActiveTags()]);
         });
-
-        input.addEventListener("input", (event) => {
-            const query = event.target.value.toLowerCase();
-            const allOptions = options.querySelectorAll("li");
-            for (let option of allOptions) {
-                const text = option.textContent.toLowerCase();
-                if (text.includes(query)) {
-                    option.classList.remove("hidden");
-                } else {
-                    option.classList.add("hidden");
-                }
-            }
-        });
-
-        options.addEventListener("click", (event) => {
-            if (event.target.tagName === "LI") {
-                const selectedOption = event.target.textContent;
-                addTag(selectedOption);
-                updateActiveFilters();
-                updateRecipesWithTags();
-                inputContainer.classList.add("hidden");
-                options.classList.add("hidden");
-                input.value = "";
-            }
-        });
-    };
-
-    setupCustomSelect("ingredients-select");
-    setupCustomSelect("appliances-select");
-    setupCustomSelect("ustensils-select");
-
-    function updateActiveFilters() {
-        const tagsContainer = document.getElementById("tags");
-        const tags = [];
-        for (let element of tagsContainer.children) {
-            tags.push(element.querySelector("p").textContent);
-        }
-        updateFilters(tags);
-    }
-
-    function updateFilters(tags) {
-        console.log("Filtres mis à jour :", tags);
-    }
-
-    function clearActiveFilters() {
-        console.log("Filtres effacés");
-    }
-
-    function updateRecipesWithTags() {
-        const tagsContainer = document.getElementById("tags");
-        const tags = [];
-        for (let element of tagsContainer.children) {
-            tags.push(element.querySelector("p").textContent);
-        }
-        const query = tags.join(" ");
-        mainSearch(query, recipesContainer);
-    }
+    });
 
     displayRecipes(recipes, recipesContainer);
 });
