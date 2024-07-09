@@ -26,11 +26,6 @@ export function displayRecipes(recipesFound, container, query = "", tags = []) {
             errorMessage = tags.join(', ');
             console.log(errorMessage);
         }
-        // Cas 4: Aucun résultat pour query et tags
-        else if (query.length > 0 && tags.length > 0) {
-            errorMessage = `${query}, ${tags.join(', ')}`;
-            console.log(errorMessage);
-        }
 
         // Affichage du message d'erreur
         container.innerHTML = `
