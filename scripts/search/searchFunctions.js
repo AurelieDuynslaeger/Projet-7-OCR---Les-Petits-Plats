@@ -30,6 +30,9 @@ export function mainSearch(query, container) {
         searchResults = recipes.slice(); // Copie toutes les recettes si la recherche est vide
     }
 
+    console.log("Résultats après recherche principale:", searchResults);
+    console.log("mainSearch - Appel de displayRecipes avec query:", query);
+
     // Afficher les recettes filtrées dans le conteneur spécifié
     displayRecipes(searchResults, container, query);
     updateRecipeCount(searchResults.length);

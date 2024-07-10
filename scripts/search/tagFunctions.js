@@ -30,7 +30,7 @@ export function addTag(tag) {
     }
 }
 
-export function updateSearch() {
+export function updateSearch(query) {
     //récupère l'élément conteneur des tags
     const tagsContainer = document.getElementById("tags");
     //convertit les enfants du conteneur de tags en un tableau
@@ -40,5 +40,5 @@ export function updateSearch() {
     //met à jour les filtres actifs avec la liste des tags
     updateActiveFilters(tags);
     //applique les filtres aux recettes présentes dans l'élément avec l'ID "recipes"
-    applyFilters(tags, document.getElementById("recipes"));
+    applyFilters(tags, document.getElementById("recipes"), query);
 }

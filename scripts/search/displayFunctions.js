@@ -2,29 +2,27 @@ import { recipeCard } from "../templates/recipeCard.js";
 
 export function displayRecipes(recipesFound, container, query = "", tags = []) {
     container.innerHTML = "";
-    console.log(query);
+    console.log("Query dans displayRecipes:", query);
+    console.log("Tags dans displayRecipes:", tags);
+    console.log("Recipes trouvées:", recipesFound);
     console.log(recipesFound.length);
 
     // Vérifier si aucune recette n'a été trouvée
     if (recipesFound.length === 0) {
         let errorMessage = "";
-        console.log(errorMessage);
-        console.log(query);
+        console.log("displayRecipes - Aucune recette trouvée pour Query:", query);
 
         // Cas 1: Aucun résultat pour la query seule
         if (query.length > 0 && tags.length === 0) {
             errorMessage = query;
-            console.log(errorMessage);
         }
         // Cas 2: Aucun résultat pour la query avec des tags
         else if (query.length > 0 && tags.length > 0) {
             errorMessage = `${query}, ${tags.join(', ')}`;
-            console.log(errorMessage);
         }
         // Cas 3: Aucun résultat pour les tags seuls
         else if (query.length === 0 && tags.length > 0) {
             errorMessage = tags.join(', ');
-            console.log(errorMessage);
         }
 
         // Affichage du message d'erreur
