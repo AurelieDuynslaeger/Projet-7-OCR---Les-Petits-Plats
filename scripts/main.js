@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (checkedInput.length >= 3 || tags.length > 0) {
             console.log(checkedInput);
             mainSearch(checkedInput, recipesContainer);
-            applyFilters(tags, recipesContainer, checkedInput); // Pass query to applyFilters
+            //on passe la query pr appliquer les filtres
+            applyFilters(tags, recipesContainer, checkedInput);
             updateSearch();
         } else {
             displayRecipes(recipes, recipesContainer, checkedInput, []);

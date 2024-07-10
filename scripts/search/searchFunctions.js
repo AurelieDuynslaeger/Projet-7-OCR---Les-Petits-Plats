@@ -50,10 +50,12 @@ export function initializeDropdowns() {
 
 //applique les filtres actifs aux résultats de recherche
 export function applyFilters(tags, container, query = "") {
+    //copie les résultats de recherche pour éviter de modifier l'original
     let filteredRecipes = [...searchResults];
-
+    //applique les filtres de tags sur les recettes
     tags.forEach(tag => {
         filteredRecipes = filteredRecipes.filter(recipe =>
+            //garde les recettes où au moins un ingrédient/ustensil/appareil contient le tag
             recipe.ingredients.some(ingredient =>
                 ingredient.ingredient.toLowerCase().includes(tag)
             ) ||
@@ -63,8 +65,9 @@ export function applyFilters(tags, container, query = "") {
             recipe.appliance.toLowerCase().includes(tag)
         );
     });
-
+    //affiche les recettes filtrées dans le conteneur spécifié
     displayRecipes(filteredRecipes, container, query, tags);
+    //met à jour le nombre de recettes filtrées
     updateRecipeCount(filteredRecipes.length);
 }
 
@@ -72,10 +75,13 @@ export function applyFilters(tags, container, query = "") {
 
 //fonction pour collecter tous les ingrédients uniques
 function collectUniqueIngredients(recipes) {
+    //création d'un nvl ensemble Set
     const ingredientsSet = new Set();
+    //filtrage des doublons
     recipes.forEach(recipe => {
         recipe.ingredients.forEach(ingredient => ingredientsSet.add(ingredient.ingredient.toLowerCase()));
     });
+    //convertion de cet ensemble en tableau
     return Array.from(ingredientsSet);
 }
 
