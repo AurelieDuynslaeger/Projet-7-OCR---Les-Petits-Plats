@@ -22,15 +22,20 @@ export function mainSearch(query, container) {
 
             return nameMatch || descriptionMatch || ingredientsMatch;
         });
+    } else {
+        // Si la longueur de query est inférieure à 3, affiche toutes les recettes
+        searchResults = recipes;
     }
 
     console.log("Résultats après recherche principale:", searchResults);
+    console.log("Query mainSearch après traitement:", query);
 
     // Afficher les recettes filtrées ou le message d'erreur
     displayRecipes(searchResults, container, query);
     updateRecipeCount(searchResults.length);
     updateFilters(searchResults);
 }
+
 
 //fonction pour initialiser chaque dropdown avec les données des recettes
 export function initializeDropdowns() {

@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     function escapeHtml(text) {
+        //correspondance des caractères spéciaux HTML vers leurs entités HTML sécurisées
         const map = {
             '&': '&amp;',
             '<': '&lt;',
@@ -26,6 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
             '"': '&quot;',
             "'": '&#039;'
         };
+        //utilisation d'une expression régulière pour rechercher tous les caractères spéciaux HTML
+        //et les remplacer par leur équivalent sécurisé du dictionnaire 'map'
         return text.replace(/[&<>"']/g, function (m) { return map[m]; });
     }
 
@@ -44,8 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+
     const handleSearch = () => {
-        const query = inputSearch.value.trim();
+        const query = inputSearch.value;
+        console.log(query);
         performSearch(query, getActiveTags());
     };
 

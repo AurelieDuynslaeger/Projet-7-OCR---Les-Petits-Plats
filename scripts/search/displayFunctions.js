@@ -2,7 +2,9 @@ import { recipeCard } from "../templates/recipeCard.js";
 
 export function displayRecipes(recipesFound, container, query = "", tags = []) {
     container.innerHTML = "";
-    console.log(query);
+    console.log("Query dans displayRecipes:", query);
+    console.log("Tags dans displayRecipes:", tags);
+    console.log("Recipes trouvées:", recipesFound);
     console.log(recipesFound.length);
 
     // Vérifier si aucune recette n'a été trouvée
