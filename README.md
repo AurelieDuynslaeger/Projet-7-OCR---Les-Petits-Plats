@@ -31,7 +31,8 @@ Une fois l'algo terminé, documentation à mettre en place et aussi chose import
 La première tâche était de concevoir l'interface utilisateur du site en utilisant Tailwind et ensuite implémenter chacune des 2 versions de l'algorithme de recherche.
  
 
- <img src="./homepage.png" alt="Logo" width="500">
+ <img src="./homepage.png" alt="homepage" width="500">
+  <img src="./jsben_results.png" alt="algo_results" width="500">
 
 ## Langages utilisés et autres technologies utilisées
 
