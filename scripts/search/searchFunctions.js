@@ -28,7 +28,7 @@ export function mainSearch(query, container) {
     }
 
     console.log("Résultats après recherche principale:", searchResults);
-    console.log("Query mainSearch après traitement:", query);
+    console.log("mainSearch - Appel de displayRecipes avec query:", query);
 
     // Afficher les recettes filtrées ou le message d'erreur
     displayRecipes(searchResults, container, query);

@@ -34,14 +34,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const performSearch = (query, tags = []) => {
         const checkedInput = escapeHtml(query);
-        console.log(checkedInput);
+        console.log("PerformSearch - Input verifié:", checkedInput);
         if (checkedInput.length >= 3 || tags.length > 0) {
-            console.log(checkedInput);
+            console.log("PerformSearch - Query ou tags valides. Query:", checkedInput, "Tags:", tags);
             mainSearch(checkedInput, recipesContainer);
             //on passe la query pr appliquer les filtres
             applyFilters(tags, recipesContainer, checkedInput);
             updateSearch();
         } else {
+            console.log("PerformSearch - Query trop petite, display de toutes les recettes");
             displayRecipes(recipes, recipesContainer, checkedInput, []);
             clearActiveFilters();
         }
@@ -50,9 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const handleSearch = () => {
         const query = inputSearch.value;
-        console.log(query);
+        console.log("HandleSearch - Query:", query);
         performSearch(query, getActiveTags());
     };
+
 
     searchForm.addEventListener("submit", (event) => {
         event.preventDefault();
