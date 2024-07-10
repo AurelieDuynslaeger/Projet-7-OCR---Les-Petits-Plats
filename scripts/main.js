@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
             mainSearch(checkedInput, recipesContainer);
             //on passe la query pr appliquer les filtres
             applyFilters(tags, recipesContainer, checkedInput);
-            updateSearch();
+            updateSearch(checkedInput);
         } else {
             console.log("PerformSearch - Query trop petite, display de toutes les recettes");
             displayRecipes(recipes, recipesContainer, checkedInput, []);

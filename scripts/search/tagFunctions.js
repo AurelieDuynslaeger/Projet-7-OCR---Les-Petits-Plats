@@ -39,7 +39,6 @@ export function updateSearch(query) {
     );
     //met à jour les filtres actifs avec la liste des tags
     updateActiveFilters(tags);
-    console.log("updateSearch - Tags:", tags, "Query:", query);
     //applique les filtres aux recettes présentes dans l'élément avec l'ID "recipes"
-    applyFilters(tags, document.getElementById("recipes"));
+    applyFilters(tags, document.getElementById("recipes"), query);
 }
