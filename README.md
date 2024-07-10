@@ -28,7 +28,7 @@ Puis une analyse de leurs performances. (Jsben.ch).
 
 Une fois l'algo terminé, documentation à mettre en place et aussi chose importante, durant tout le projet il fallait donc prendre en compte les principes du Green Code, ainsi un algorithme qui soit non seulement performant mais aussi respectueux de l'environnement.
 
-La première tâche était de concevoir l'interface utilisateur du site en utilisant Tailwind et ensuite implémenter chacune des 2 versions de l'algorithme de recherche.
+La première tâche était de concevoir l'interface utilisateur du site en utilisant Tailwind et ensuite implémenter chacune des 2 versions de l'algorithme de recherche, chacun étant développé sur une branche de ce projet !
  
 
  <img src="./homepage.png" alt="Logo" width="500">
