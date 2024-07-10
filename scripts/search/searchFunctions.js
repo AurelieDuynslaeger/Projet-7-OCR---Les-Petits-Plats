@@ -2,30 +2,16 @@ import recipes from "../../data/recipes.js";
 import { displayRecipes, updateRecipeCount, updateFilters, updateSelectOptions } from "./displayFunctions.js";
 import { setupDropdown } from "./filterFunctions.js";
 
-let searchResults = [];
-
-function escapeHtml(text) {
-    //caractères spéciaux HTML à leurs équivalents échappés
-    var map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-    };
-    //recherche tous les caractères dans le texte
-    //puis remplace chaque occurence trouvée par la valeur correspondante
-    return text.replace(/[&<>"']/g, function (m) { return map[m]; });
-}
+let searchResults;
 
 // Fonction principale pour effectuer la recherche
 export function mainSearch(query, container) {
-    const checkedInput = escapeHtml(query);
+    console.log("Recherche principale - Query:", query);
     searchResults = [];
 
     // Filtrer les recettes en fonction de la recherche principale (query)
-    if (checkedInput.length >= 3) {
-        const queryLower = checkedInput.toLowerCase();
+    if (query.length >= 3) {
+        const queryLower = query.trim().toLowerCase();
 
         // Itérer sur toutes les recettes
         for (let i = 0; i < recipes.length; i++) {
@@ -41,10 +27,7 @@ export function mainSearch(query, container) {
             }
         }
     } else {
-        // Copier toutes les recettes si la recherche est vide
-        for (let i = 0; i < recipes.length; i++) {
-            searchResults.push(recipes[i]);
-        }
+        searchResults = recipes.slice(); // Copie toutes les recettes si la recherche est vide
     }
 
     // Afficher les recettes filtrées dans le conteneur spécifié
@@ -70,8 +53,8 @@ export function initializeDropdowns() {
 }
 
 // Applique les filtres actifs aux résultats de recherche
-export function applyFilters(tags, container) {
-    let filteredRecipes = searchResults;
+export function applyFilters(tags, container, query = "") {
+    let filteredRecipes = [...searchResults];
 
     if (tags.length > 0) {
         tags.forEach(tag => {
@@ -87,29 +70,32 @@ export function applyFilters(tags, container) {
         });
     }
 
-    displayRecipes(filteredRecipes, container, '', tags);
+    displayRecipes(filteredRecipes, container, query, tags);
     updateRecipeCount(filteredRecipes.length);
 }
 
 
 
-// Fonction pour collecter tous les ingrédients uniques
+//fonction pour collecter tous les ingrédients uniques
 function collectUniqueIngredients(recipes) {
+    //création d'un nvl ensemble Set
     const ingredientsSet = new Set();
+    //filtrage des doublons
     recipes.forEach(recipe => {
         recipe.ingredients.forEach(ingredient => ingredientsSet.add(ingredient.ingredient.toLowerCase()));
     });
+    //convertion de cet ensemble en tableau
     return Array.from(ingredientsSet);
 }
 
-// Fonction pour collecter tous les appareils uniques
+//fonction pour collecter tous les appareils uniques
 function collectUniqueAppliances(recipes) {
     const appliancesSet = new Set();
     recipes.forEach(recipe => appliancesSet.add(recipe.appliance.toLowerCase()));
     return Array.from(appliancesSet);
 }
 
-// Fonction pour collecter tous les ustensiles uniques
+//fonction pour collecter tous les ustensiles uniques
 function collectUniqueUstensils(recipes) {
     const ustensilsSet = new Set();
     recipes.forEach(recipe => {

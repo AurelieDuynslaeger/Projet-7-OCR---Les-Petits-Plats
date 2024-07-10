@@ -2,21 +2,47 @@ import { recipeCard } from "../templates/recipeCard.js";
 
 export function displayRecipes(recipesFound, container, query = "", tags = []) {
     container.innerHTML = "";
+    console.log(query);
+    console.log(recipesFound.length);
 
-    if (recipesFound.length === 0 && tags.length > 0) {
-        const errorMessage = query ? query : tags.join(', ');
+    // Vérifier si aucune recette n'a été trouvée
+    if (recipesFound.length === 0) {
+        let errorMessage = "";
+        console.log(errorMessage);
+        console.log(query);
+
+        // Cas 1: Aucun résultat pour la query seule
+        if (query.length > 0 && tags.length === 0) {
+            errorMessage = query;
+            console.log(errorMessage);
+        }
+        // Cas 2: Aucun résultat pour la query avec des tags
+        else if (query.length > 0 && tags.length > 0) {
+            errorMessage = `${query}, ${tags.join(', ')}`;
+            console.log(errorMessage);
+        }
+        // Cas 3: Aucun résultat pour les tags seuls
+        else if (query.length === 0 && tags.length > 0) {
+            errorMessage = tags.join(', ');
+            console.log(errorMessage);
+        }
+
+        // Affichage du message d'erreur
         container.innerHTML = `
             <div class="no-recipes">
                 <p class="font-manrope text-2xl">Aucune recette ne contient '${errorMessage}', vous pouvez chercher 'tarte aux pommes', 'poisson', etc.</p>
             </div>
         `;
+        console.log(container.innerHTML);
     } else {
+        // Affichage des recettes trouvées
         recipesFound.forEach(recipe => {
             const cardHTML = recipeCard(recipe);
             container.innerHTML += cardHTML;
         });
     }
 
+    // Mise à jour du compteur de recettes
     const countRecipe = document.getElementById("recipe-count");
     countRecipe.textContent = `${recipesFound.length} recette(s)`;
 }
@@ -28,37 +54,44 @@ export function updateRecipeCount(count) {
 }
 
 export function updateFilters(filteredRecipes) {
+    //initialisation des tableaux pour stocker les ingrédients, appareils et ustensiles
     let ingredients = [];
     let appliances = [];
     let ustensils = [];
-
-    for (let recipe of filteredRecipes) {
-        for (let ingredient of recipe.ingredients) {
-            ingredients.push(ingredient.ingredient.toLowerCase());
-        }
+    //extraction des ingrédients, appareils et ustensiles des recettes filtrée
+    filteredRecipes.forEach(recipe => {
+        //ajout des ingrédients, ustensils et appareils dans leurs tableaux respectifs
+        recipe.ingredients.forEach(ingredient =>
+            ingredients.push(ingredient.ingredient.toLowerCase())
+        );
         appliances.push(recipe.appliance.toLowerCase());
-        for (let ustensil of recipe.ustensils) {
-            ustensils.push(ustensil.toLowerCase());
-        }
-    }
+        recipe.ustensils.forEach(ustensil => ustensils.push(ustensil.toLowerCase()));
+    });
 
+    //élimination des doublons en utilisant des Set puis reconversion en tableau
     ingredients = [...new Set(ingredients)];
     appliances = [...new Set(appliances)];
     ustensils = [...new Set(ustensils)];
-
+    //mise à jour des options des filtres
     updateSelectOptions("ingredients-select", ingredients);
     updateSelectOptions("appliances-select", appliances);
     updateSelectOptions("ustensils-select", ustensils);
 }
 
 export function updateSelectOptions(selectId, options) {
+    //dom element qui conteint les toptions du dropdown
     const selectElement = document.querySelector(`#${selectId} .select-options`);
+    //vide le contenu HTML de l'élément pour supprimer toutes les anciennes options
     selectElement.innerHTML = "";
-
-    for (let option of options) {
+    //ajoute les nouvelles options
+    options.forEach(option => {
+        //crée un nouvel élément <li> pour chaque option
         const optionElement = document.createElement("li");
+        //ajoute les classes CSS à l'élément <li>
         optionElement.classList.add("p-4", "hover:bg-customYellow", "cursor-pointer");
+        //définit le texte de l'élément <li> à l'option actuelle
         optionElement.textContent = option;
+        //ajoute l'élément <li> au conteneur des options
         selectElement.appendChild(optionElement);
-    }
+    });
 }

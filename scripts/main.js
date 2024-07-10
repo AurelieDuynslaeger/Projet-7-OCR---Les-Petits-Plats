@@ -2,14 +2,12 @@ import recipes from "./../data/recipes.js";
 import { initializeDropdowns, mainSearch, applyFilters } from "./search/searchFunctions.js";
 import { displayRecipes } from "./search/displayFunctions.js";
 import { updateSearch } from "./search/tagFunctions.js";
-
 import { clearActiveFilters } from "./search/filterFunctions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const recipesContainer = document.getElementById("recipes");
     const inputSearch = document.getElementById("search");
     const searchForm = document.getElementById("search-form");
-    const searchIcon = document.getElementById("search-icon");
 
     // Chargement initial des dropdowns avec les données des recettes
     initializeDropdowns();
@@ -21,38 +19,46 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     };
 
+    function escapeHtml(text) {
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, function (m) { return map[m]; });
+    }
+
     const performSearch = (query, tags = []) => {
-        if (query.length >= 3 || tags.length > 0) {
-            mainSearch(query, recipesContainer);
-            applyFilters(tags, recipesContainer);
+        const checkedInput = escapeHtml(query);
+        console.log(checkedInput);
+        if (checkedInput.length >= 3 || tags.length > 0) {
+            console.log(checkedInput);
+            mainSearch(checkedInput, recipesContainer);
+            //on passe la query pr appliquer les filtres
+            applyFilters(tags, recipesContainer, checkedInput);
             updateSearch();
         } else {
-            displayRecipes(recipes, recipesContainer, query, []);
+            displayRecipes(recipes, recipesContainer, checkedInput, []);
             clearActiveFilters();
         }
-
     };
 
+    const handleSearch = () => {
+        const query = inputSearch.value.trim();
+        performSearch(query, getActiveTags());
+    };
 
     searchForm.addEventListener("submit", (event) => {
         event.preventDefault();
-        const query = inputSearch.value.trim();
-        performSearch(query, getActiveTags());
-        inputSearch.value = "";
+        handleSearch();
     });
 
-    inputSearch.addEventListener("input", (event) => {
-        const query = event.target.value.trim();
-        if (query.length >= 3) {
-            performSearch(query, getActiveTags());
-            updateSearch();
-        } else {
-            displayRecipes(recipes, recipesContainer);
-            clearActiveFilters();
-        }
+    inputSearch.addEventListener("input", () => {
+        handleSearch();
     });
 
-    // Écouteur d'événement pour les dropdowns où les utilisateurs choisissent les tags
     document.querySelectorAll(".select-options").forEach(selectOptions => {
         selectOptions.addEventListener("click", (event) => {
             const selectedTag = event.target.textContent.trim();
